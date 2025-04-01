@@ -3,21 +3,34 @@ import ReactDOM from "react-dom/client";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { AuthProvider } from "./context/AuthContext";
 import PrivateRoute from "./utils/PrivateRoute";
-import LoginPage from "./pages/LoginPage";
+import Login from "./components/Login";
 import Dashboard from "./pages/Dashboard";
 import AdminPage from "./pages/AdminPage";
 import UnauthorizedPage from "./pages/UnauthorizedPage";
 import Internships from "./pages/Internships"; // ✅ Added import
+// import ManageOpp from "./pages/ManageOpp";
+import PostInternship from "./pages/PostInternships";
+import EditInternships from "./pages/EditInternships";
+import EditInternshipForm from "./components/EditInternshipForm";
+import ManageOpportunities from "./pages/ManageOpportunities";
+import SavedInternships from "./pages/SavedInternships";
+import "./index.css";
+import App from "./App";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
     <AuthProvider>
       <Router>
         <Routes>
-          <Route path="/login" element={<LoginPage />} />
+          <Route path="/login" element={<Login />} />
           <Route path="/" element={<Dashboard />} />
           <Route path="/unauthorized" element={<UnauthorizedPage />} />
           <Route path="/internships" element={<Internships />} /> {/* ✅ Fixed */}
+          <Route path="/manage-opportunities" element={<ManageOpportunities/>}/>
+          <Route path="/post-internships" element={<PostInternship/>}/>
+          <Route path="/edit-internships" element={<EditInternships/>}/>
+          <Route path="/edit-internship/:id" element={<EditInternshipForm/>}/>
+          <Route path="/saved-internships" element={<SavedInternships/>}/>
           <Route
             path="/admin"
             element={

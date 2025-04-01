@@ -1,4 +1,22 @@
-:root {
+@import "tailwindcss";
+.input-field {
+  @apply w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500;
+}
+.filter-select {
+  @apply w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500;
+}
+.card {
+  @apply bg-white shadow-md rounded-lg p-5 transition-all hover:shadow-2xl;
+}
+
+.button {
+  @apply px-4 py-2 rounded-md font-semibold transition hover:opacity-80;
+}
+
+.save-button {
+  @apply bg-yellow-500 text-white px-3 py-1 rounded-md hover:bg-yellow-600;
+} 
+/* :root {
   font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
   font-weight: 400;
@@ -65,4 +83,4 @@ button:focus-visible {
   button {
     background-color: #f9f9f9;
   }
-}
+} */

@@ -1,44 +1,38 @@
-import { GoogleAuthProvider, signInWithPopup, signOut } from "firebase/auth";
-import { auth } from "../firebase";
+import { useAuth } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
-import { useState, useEffect } from "react";
 
 const Login = () => {
-    const [user, setUser] = useState(null);
+    const { user, signIn, logOut } = useAuth();
     const navigate = useNavigate();
 
-    useEffect(() => {
-        const unsubscribe = auth.onAuthStateChanged((currentUser) => {
-            setUser(currentUser);
-        });
-        return () => unsubscribe();
-    }, []);
-
-    const handleGoogleLogin = async () => {
-        const provider = new GoogleAuthProvider();
+    const handlesignin = async () => {
         try {
-            await signInWithPopup(auth, provider);
+            await signIn();
             alert("Login Successful!");
-            navigate("/internships");
-        } catch (err) {
-            console.log("Login Failed", err);
+            navigate("/");
+        } catch (error) {
+            console.error("Login failed", error);
         }
     };
 
-    const handleLogout = async () => {
-        await signOut(auth);
-        setUser(null);
-        alert("Logged out!");
-    };
-
     return (
-        <div>
-            <h2>LOGIN</h2>
-            {user ? (
-                <button onClick={handleLogout}>Logout</button>
-            ) : (
-                <button onClick={handleGoogleLogin}>Login with Google</button>
-            )}
+        <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100">
+            <div className="bg-white shadow-md rounded-lg p-8 w-96 text-center">
+                <h2 className="text-2xl font-semibold text-gray-700 mb-6">Login to Your Account</h2>
+                {user ? (
+                    <button 
+                        onClick={logOut} 
+                        className="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600 transition duration-300">
+                        Logout
+                    </button>
+                ) : (
+                    <button 
+                        onClick={handlesignin} 
+                        className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition duration-300">
+                        Login with Google
+                    </button>
+                )}
+            </div>
         </div>
     );
 };
