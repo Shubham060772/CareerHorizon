@@ -25,7 +25,7 @@ ReactDOM.createRoot(document.getElementById("root")).render(
           <Route path="/login" element={<Login />} />
           <Route path="/" element={<Dashboard />} />
           <Route path="/unauthorized" element={<UnauthorizedPage />} />
-          <Route path="/internships" element={<Internships />} /> {/* ✅ Fixed */}
+          <Route path="/internships" element={<Internships />} />
           <Route path="/manage-opportunities" element={<ManageOpportunities/>}/>
           <Route path="/post-internships" element={<PostInternship/>}/>
           <Route path="/edit-internships" element={<EditInternships/>}/>

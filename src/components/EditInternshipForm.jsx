@@ -37,44 +37,73 @@ const EditInternshipForm = () => {
     }
   };
 
-  if (loading) return <p>Loading...</p>;
-  if (!internship) return <p>Internship not found.</p>;
+  if (loading) return <p className="text-center text-gray-500">Loading...</p>;
+  if (!internship) return <p className="text-center text-red-500">Internship not found.</p>;
+
   const handleInputChange = (field) => (e) => {
     setInternship({ ...internship, [field]: e.target.value });
   };
+
   return (
-    <div>
-      <h2 className="text-xl font-medium text-black dark:text-white">Edit Internship</h2>
-      <label>Title:</label>
-      <input
-        type="text"
-        value={internship.title || ""}
-        onChange={handleInputChange("title")}
+    <div className="max-w-4xl mx-auto p-6 bg-white shadow-md rounded-lg border border-gray-200">
+      <h2 className="text-3xl font-bold text-center mb-6 text-gray-800">Edit Internship</h2>
+      
+      <div className="space-y-4">
+        <label className="block text-gray-700 font-medium">Title:</label>
+        <input
+          type="text"
+          value={internship.title || ""}
+          onChange={handleInputChange("title")}
+          className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
         />
-    <label>Company:</label>
-      <input
-        type="text"
-        value={internship.company || ""}
-        onChange={handleInputChange("company")}
+
+        <label className="block text-gray-700 font-medium">Company:</label>
+        <input
+          type="text"
+          value={internship.company || ""}
+          onChange={handleInputChange("company")}
+          className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
         />
-    <label>Location:</label>
-      <input
-        type="text"
-        value={internship.location || ""}
-        onChange={handleInputChange("location")}
-      />
-    <label>Stipend:</label>
-      <input
-        type="text"
-        value={internship.stipend || ""}
-        onChange={handleInputChange("stipend")}
-      />
-      <label>Description:</label>
-      <textarea
-        value={internship.description || ""}
-        onChange={handleInputChange("description")}
-      />
-      <button onClick={handleUpdate}>Save Changes</button>
+
+        <label className="block text-gray-700 font-medium">Location:</label>
+        <input
+          type="text"
+          value={internship.location || ""}
+          onChange={handleInputChange("location")}
+          className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
+        />
+
+        <label className="block text-gray-700 font-medium">Stipend:</label>
+        <input
+          type="text"
+          value={internship.stipend || ""}
+          onChange={handleInputChange("stipend")}
+          className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
+        />
+
+        <label className="block text-gray-700 font-medium">Description:</label>
+        <textarea
+          value={internship.description || ""}
+          onChange={handleInputChange("description")}
+          rows="4"
+          className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
+        ></textarea>
+
+        <div className="flex justify-between mt-4">
+          <button 
+            onClick={() => navigate("/edit-internships")}
+            className="px-4 py-2 bg-gray-500 text-white rounded-md hover:bg-gray-600 transition duration-300"
+          >
+            Cancel
+          </button>
+          <button 
+            onClick={handleUpdate}
+            className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition duration-300"
+          >
+            Save Changes
+          </button>
+        </div>
+      </div>
     </div>
   );
 };

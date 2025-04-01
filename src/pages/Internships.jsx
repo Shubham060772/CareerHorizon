@@ -3,7 +3,8 @@ import { collection, getDocs, doc, setDoc, deleteDoc, query, where } from "fireb
 import { db } from "../firebase";
 import { useAuth } from "../context/AuthContext";
 import {useNavigate} from "react-router-dom";
-import "../index.css"
+import { BookmarkIcon,BookmarkFilledIcon } from "../components/BookmarkIcon";
+
 
 const Internships = () => {
     const { user } = useAuth();
@@ -165,7 +166,7 @@ const Internships = () => {
 
                             <button onClick={() => toggleBookmark(job.id)}
                                     className={`button ${savedInternships[job.id] ? "bg-red-500" : "bg-yellow-500"} text-white`}>
-                                {savedInternships[job.id] ? "Unsave" : "Save"}
+                                {savedInternships[job.id] ?<BookmarkFilledIcon/>: <BookmarkIcon/>}
                             </button>
                         </div>
 
