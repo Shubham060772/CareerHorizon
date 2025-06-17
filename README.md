@@ -50,9 +50,5 @@ Career Horizon is a full-stack web application designed to centralize and displa
 ## Contributing
 Feel free to submit pull requests and report issues. Contributions are welcome!
 
-## License
-This project is licensed under the MIT License.
-
----
 Developed by [Shubham Agrawal](https://github.com/yourusername)
 
