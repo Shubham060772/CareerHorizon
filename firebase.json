@@ -1,4 +1,14 @@
 {
+  "firestore": {
+    "rules": "firestore.rules",
+    "indexes": "firestore.indexes.json"
+  },
+  "functions": {
+    "source": "functions",
+    "runtime": "nodejs18",
+    "memory": "2GB",
+    "timeout": "300s"
+  },
   "hosting": {
     "public": "dist",
     "ignore": [

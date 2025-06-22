@@ -7,13 +7,16 @@
     "dev": "vite",
     "build": "vite build",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "update-jobs": "node scripts/updateInternships.mjs",
+    "update-jobs:test": "node scripts/updateInternships.mjs --test",
+    "create-admin": "node scripts/create-admin.mjs"
   },
   "dependencies": {
     "@tailwindcss/vite": "^4.0.17",
-    "dotenv": "^16.4.7",
     "firebase": "^11.5.0",
     "lucide-react": "^0.486.0",
+    "node-fetch": "^3.3.2",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-router-dom": "^7.4.0",
@@ -24,10 +27,12 @@
     "@types/react": "^19.0.10",
     "@types/react-dom": "^19.0.4",
     "@vitejs/plugin-react": "^4.3.4",
+    "dotenv": "^16.5.0",
     "eslint": "^9.21.0",
     "eslint-plugin-react-hooks": "^5.1.0",
     "eslint-plugin-react-refresh": "^0.4.19",
     "globals": "^15.15.0",
+    "puppeteer": "^24.10.1",
     "vite": "^6.2.0"
   }
 }

@@ -20,7 +20,7 @@ const Internships = () => {
     const [sortOption, setSortOption] = useState("none");
     const [currentPage, setCurrentPage] = useState(1);
     const [savedInternships, setSavedInternships] = useState({});
-    const internshipsPerPage = 5;
+    const internshipsPerPage = 15;
 
     useEffect(() => {
         const fetchInternships = async () => {
@@ -110,6 +110,7 @@ const Internships = () => {
     const indexOfLastInternship = currentPage * internshipsPerPage;
     const indexOfFirstInternship = indexOfLastInternship - internshipsPerPage;
     const currentInternships = sortedInternships.slice(indexOfFirstInternship, indexOfLastInternship);
+    const totalPages = Math.ceil(sortedInternships.length / internshipsPerPage);
 
     if (loading) return <p>Loading internships...</p>;
 
@@ -118,65 +119,138 @@ const Internships = () => {
             <h1 className="text-3xl font-bold text-center mb-6">Internships</h1>
 
             {/* 🔍 Search & Filters */}
-            <div className="grid md:grid-cols-3 gap-4 mb-6">
-
-            <input type="text" placeholder="Search by title, company, or location" value={searchQuery} onChange={handleSearch} className="input-field" />
-            
-            <select name="paid" value={filters.paid} onChange={handleFilterChange} className="filter-select">
-                <option value="all">All</option>
-                <option value="paid">Paid</option>
-                <option value="unpaid">Unpaid</option>
-            </select>
-
-            {/* <select name="remote" value={filters.remote} onChange={handleFilterChange}>
-                <option value="all">All</option>
-                <option value="remote">Remote</option>
-                <option value="onsite">On-Site</option>
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
+                <input 
+                    type="text" 
+                    placeholder="Search by title, company, or location" 
+                    value={searchQuery} 
+                    onChange={handleSearch} 
+                    className="input-field col-span-full md:col-span-2 lg:col-span-3"
+                />
+                
+                <select 
+                    name="paid" 
+                    value={filters.paid} 
+                    onChange={handleFilterChange} 
+                    className="filter-select"
+                >
+                    <option value="all">Payment Status</option>
+                    <option value="paid">Paid</option>
+                    <option value="unpaid">Unpaid</option>
                 </select>
 
-                <select name="duration" value={filters.duration} onChange={handleFilterChange}>
-                <option value="all">All</option>
-                <option value="<3">Less than 3 months</option>
-                <option value="3-6">3-6 months</option>
-                <option value=">6">More than 6 months</option>
-                </select> */}
+                <select 
+                    name="remote" 
+                    value={filters.remote} 
+                    onChange={handleFilterChange}
+                    className="filter-select"
+                >
+                    <option value="all">Work Type</option>
+                    <option value="remote">Remote</option>
+                    <option value="onsite">On-Site</option>
+                </select>
 
-            {/* ✅ Sorting Dropdown */}
-            <select value={sortOption} onChange={handleSortChange} className="filter-select">
-                <option value="none">Sort by</option>
-                <option value="stipend">Stipend (High to Low)</option>
-                <option value="duration">Duration (Long to Short)</option>
-            </select>
+                <select 
+                    name="duration" 
+                    value={filters.duration} 
+                    onChange={handleFilterChange}
+                    className="filter-select"
+                >
+                    <option value="all">Duration</option>
+                    <option value="<3">Less than 3 months</option>
+                    <option value="3-6">3-6 months</option>
+                    <option value=">6">More than 6 months</option>
+                </select>
 
+                <select 
+                    value={sortOption} 
+                    onChange={handleSortChange} 
+                    className="filter-select"
+                >
+                    <option value="none">Sort by</option>
+                    <option value="stipend">Stipend (High to Low)</option>
+                    <option value="duration">Duration (Long to Short)</option>
+                </select>
             </div>
-            {/* 🔥 Displaying Internships */}
-            <div className="grid md:grid-cols-2 gap-6">
-            {currentInternships.length === 0 ? (
-                <p>No internships available.</p>
-            ) : (currentInternships.map((job) => (
-                    <div key={job.id} className="card">
-                        <h2 className="text-xl font-semibold text-gray-700">{job.title} at {job.company}</h2>
-                        <p className="text-gray-500">{job.location}</p>
-                        <p className="text-gray-600">Duration: <span className="font-semibold">{job.duration} months</span></p>
-                        <p className="text-gray-600">Stipend: <span className="font-semibold">{job.stipend}</span></p>
-                        
-                        <div className="flex justify-between items-center mt-4">
-                            <a href={job.applyLink} target="_blank" rel="noopener noreferrer"
-                               className="button bg-blue-500 text-white">Apply Now</a>
+            {/* 🔥 Displaying Internships */}            <div className="relative min-h-[600px] pb-16">
+                <div className="grid md:grid-cols-2 gap-6">
+                    {currentInternships.length === 0 ? (
+                        <p>No internships available.</p>
+                    ) : (currentInternships.map((job) => (
+                        <div key={job.id} className="card">
+                            <h2 className="text-xl font-semibold text-gray-700">{job.title} at {job.company}</h2>                            <div className="flex justify-between items-start">
+                                <p className="text-gray-500">{job.location}</p>
+                                {job.source && (
+                                    <span className="px-2 py-1 text-xs rounded bg-blue-100 text-blue-800">
+                                        {job.source}
+                                    </span>
+                                )}
+                            </div>
+                            <p className="text-gray-600">Duration: <span className="font-semibold">{job.duration} months</span></p>
+                            <p className="text-gray-600">Stipend: <span className="font-semibold">
+                                {job.stipend ? `₹ ${job.stipend.toLocaleString('en-IN')} per month` : 'Not specified'}
+                            </span></p>
+                            {job.deadline && (
+                                <p className="text-gray-600 mt-2">
+                                    Deadline: <span className="font-semibold text-red-600">
+                                        {new Date(job.deadline).toLocaleDateString('en-IN', {
+                                            day: 'numeric',
+                                            month: 'short',
+                                            year: 'numeric'
+                                        })}
+                                    </span>
+                                </p>
+                            )}
+                            
+                            <div className="flex justify-between items-center mt-4">
+                                <a href={job.applyLink} target="_blank" rel="noopener noreferrer"
+                                   className="button bg-blue-500 text-white">Apply Now</a>
 
-                            <button onClick={() => toggleBookmark(job.id)}
-                                    className={`button ${savedInternships[job.id] ? "bg-red-500" : "bg-yellow-500"} text-white`}>
-                                {savedInternships[job.id] ?<BookmarkFilledIcon/>: <BookmarkIcon/>}
-                            </button>
+                                <button onClick={() => toggleBookmark(job.id)}
+                                        className={`button ${savedInternships[job.id] ? "bg-red-500" : "bg-yellow-500"} text-white`}>
+                                    {savedInternships[job.id] ?<BookmarkFilledIcon/>: <BookmarkIcon/>}
+                                </button>
+                            </div>
                         </div>
-
+                    )))}
+                </div>
+                {/* Pagination Controls */}
+                {totalPages > 1 && (
+                    <div className="flex justify-center items-center gap-2 mt-8">
+                        <button
+                            className="px-3 py-1 rounded bg-gray-200 hover:bg-gray-300"
+                            onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
+                            disabled={currentPage === 1}
+                        >
+                            Previous
+                        </button>
+                        {Array.from({ length: totalPages }, (_, i) => (
+                            <button
+                                key={i + 1}
+                                className={`px-3 py-1 rounded ${currentPage === i + 1 ? 'bg-blue-500 text-white' : 'bg-gray-200 hover:bg-gray-300'}`}
+                                onClick={() => setCurrentPage(i + 1)}
+                            >
+                                {i + 1}
+                            </button>
+                        ))}
+                        <button
+                            className="px-3 py-1 rounded bg-gray-200 hover:bg-gray-300"
+                            onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
+                            disabled={currentPage === totalPages}
+                        >
+                            Next
+                        </button>
                     </div>
-                        
-                ))
-            )}
-                    <div>
-                        <button className="save-button" onClick={()=>navigate("/saved-internships")}>Saved Internships</button>
-                    </div>
+                )}
+                
+                <div className="fixed bottom-6 right-6">
+                    <button 
+                        className="save-button shadow-lg hover:shadow-xl transform hover:-translate-y-1 transition-all duration-200"
+                        onClick={() => navigate("/saved-internships")}
+                    >
+                        Saved Internships
+                    </button>
+                </div>
             </div>
         </div>
     );

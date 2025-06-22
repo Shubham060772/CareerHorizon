@@ -1,7 +1,15 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import { auth, db } from "../firebase";
 import { signInWithPopup, GoogleAuthProvider, signOut } from "firebase/auth";
-import { collection, query, where, getDocs } from "firebase/firestore";
+import { 
+  collection, 
+  query, 
+  where, 
+  getDocs, 
+  doc, 
+  setDoc, 
+  serverTimestamp 
+} from "firebase/firestore";
 
 // Create Auth Context
 const AuthContext = createContext();
@@ -10,33 +18,35 @@ const AuthContext = createContext();
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [role, setRole] = useState("student"); // Default: student
-
-  // Fetch user role from Firestore
+  // Fetch user role from Firestore or create new user
   const fetchUserRole = async (authUser) => {
     if (!authUser) {
-      console.log("No authenticated user found. Assigning default role: student");
       setRole("student");
       return;
     }
 
-    console.log("Fetching role for:", authUser.email);
-
     try {
       const usersRef = collection(db, "users");
-      const q = query(usersRef, where("email", "==", authUser.email.trim())); // Trim email to avoid spaces
+      const q = query(usersRef, where("email", "==", authUser.email.trim()));
       const querySnapshot = await getDocs(q);
 
       if (!querySnapshot.empty) {
         const userData = querySnapshot.docs[0].data();
-        console.log("User Data from Firestore:", userData);
-
-        setRole(userData.role || "student"); // Assign role, default: student
+        setRole(userData.role || "student");
       } else {
-        console.warn("User not found in Firestore. Assigning default role: student.");
+        // Create new user document with default role
+        const userDocRef = doc(usersRef);
+        await setDoc(userDocRef, {
+          email: authUser.email.trim(),
+          role: "student",
+          displayName: authUser.displayName,
+          createdAt: serverTimestamp(),
+          lastLogin: serverTimestamp()
+        });
         setRole("student");
       }
     } catch (error) {
-      console.error("Error fetching user role:", error);
+      console.error("Error managing user role:", error);
       setRole("student");
     }
   };

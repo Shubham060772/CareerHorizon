@@ -35,10 +35,105 @@
   }
 }
 
+.input-field {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid #e2e8f0;
+  border-radius: 0.375rem;
+  background-color: white;
+  color: #1a202c;
+  transition: border-color 0.2s ease;
+}
+
+.input-field:focus {
+  outline: none;
+  border-color: #4299e1;
+  box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.1);
+}
+
+.filter-select {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid #e2e8f0;
+  border-radius: 0.375rem;
+  background-color: white;
+  color: #1a202c;
+  cursor: pointer;
+  transition: border-color 0.2s ease;
+}
+
+.filter-select:focus {
+  outline: none;
+  border-color: #4299e1;
+  box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.1);
+}
+
 .card {
-  padding: 2em;
+  background-color: white;
+  border-radius: 0.5rem;
+  padding: 1.5rem;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
 }
 
 .read-the-docs {
   color: #888;
+}
+
+/* Hackathon Management Panel Styles */
+.manage-panel {
+  background: #f8fafc;
+  border-radius: 1rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+  padding: 2rem;
+  margin-bottom: 2rem;
+}
+
+.manage-panel h1, .manage-panel h2 {
+  color: #2563eb;
+}
+
+.manage-panel .panel-buttons {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  margin-bottom: 1.5rem;
+}
+
+.manage-panel .panel-buttons button {
+  padding: 0.75rem 1.5rem;
+  border-radius: 0.5rem;
+  font-weight: 600;
+  border: none;
+  background: #2563eb;
+  color: #fff;
+  transition: background 0.2s;
+}
+.manage-panel .panel-buttons button.active, .manage-panel .panel-buttons button:hover {
+  background: #1d4ed8;
+}
+
+.success-message {
+  color: #16a34a;
+  font-weight: 500;
+  margin-top: 0.5rem;
+}
+.error-message {
+  color: #dc2626;
+  font-weight: 500;
+  margin-top: 0.5rem;
+}
+
+@media (max-width: 600px) {
+  .manage-panel {
+    padding: 1rem;
+  }
+  .card {
+    padding: 1rem;
+  }
 }

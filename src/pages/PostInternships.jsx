@@ -13,10 +13,20 @@ const PostInternship = () => {
     location: "",
     applyLink: "",
     stipend: "",
+    duration: "",
+    paid: false,
+    remote: false,
   });
 
   const handleChange = (e) => {
-    setInternship({ ...internship, [e.target.name]: e.target.value });
+    const value =
+      e.target.type === "checkbox"
+        ? e.target.checked
+        : e.target.type === "number"
+        ? Number(e.target.value)
+        : e.target.value;
+
+    setInternship({ ...internship, [e.target.name]: value });
   };
 
   const handleSubmit = async (e) => {
@@ -26,14 +36,27 @@ const PostInternship = () => {
       return;
     }
     try {
-      await addDoc(collection(db, "internships"), {
+      // Convert stipend and duration to numbers
+      const internshipData = {
         ...internship,
+        stipend: Number(internship.stipend),
+        duration: Number(internship.duration),
         postedBy: user.email,
         timestamp: serverTimestamp(),
-      });
-      // Show success popup instead of alert
+      };
+
+      await addDoc(collection(db, "internships"), internshipData);
       setShowSuccessPopup(true);
-      setInternship({ title: "", company: "", location: "", applyLink: "", stipend: "" });
+      setInternship({
+        title: "",
+        company: "",
+        location: "",
+        applyLink: "",
+        stipend: "",
+        duration: "",
+        paid: false,
+        remote: false,
+      });
     } catch (error) {
       console.error("Error posting internship:", error);
       alert("Failed to post internship.");
@@ -74,7 +97,7 @@ const PostInternship = () => {
           />
           <input
             name="location"
-            placeholder="Location (Remote/City)"
+            placeholder="Location (City, Country)"
             value={internship.location}
             onChange={handleChange}
             required
@@ -88,14 +111,50 @@ const PostInternship = () => {
             required
             className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
-          <input
-            name="stipend"
-            placeholder="Stipend"
-            value={internship.stipend}
-            onChange={handleChange}
-            required
-            className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-          />
+          <div className="flex space-x-4">
+            <input
+              type="number"
+              name="stipend"
+              placeholder="Monthly Stipend Amount"
+              value={internship.stipend}
+              onChange={handleChange}
+              required
+              className="w-1/2 p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            />
+            <input
+              type="number"
+              name="duration"
+              placeholder="Duration (months)"
+              value={internship.duration}
+              onChange={handleChange}
+              required
+              min="1"
+              max="12"
+              className="w-1/2 p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            />
+          </div>
+          <div className="flex items-center space-x-4">
+            <label className="flex items-center space-x-2">
+              <input
+                type="checkbox"
+                name="paid"
+                checked={internship.paid}
+                onChange={handleChange}
+                className="form-checkbox h-5 w-5 text-blue-500"
+              />
+              <span>Paid Internship</span>
+            </label>
+            <label className="flex items-center space-x-2">
+              <input
+                type="checkbox"
+                name="remote"
+                checked={internship.remote}
+                onChange={handleChange}
+                className="form-checkbox h-5 w-5 text-blue-500"
+              />
+              <span>Remote Work</span>
+            </label>
+          </div>
 
           <button
             type="submit"
@@ -107,7 +166,7 @@ const PostInternship = () => {
       )}
 
       {/* Success Popup */}
-      <SuccessPopup 
+      <SuccessPopup
         isVisible={showSuccessPopup}
         onClose={closeSuccessPopup}
         message="Your internship opportunity has been posted successfully! Students can now apply."

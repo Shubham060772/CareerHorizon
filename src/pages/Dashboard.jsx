@@ -1,11 +1,31 @@
 import { useAuth } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
 import "../index.css";
 
 const Dashboard = () => {
   const { user, role, signIn, logOut } = useAuth();
   const navigate = useNavigate();
   const userRole = role || "student";
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    // Show loader until role is verified (not undefined/null)
+    if (role !== undefined && role !== null) {
+      setLoading(false);
+    }
+  }, [role]);
+
+  if (loading) {
+    return (
+      <div className="w-screen h-screen flex justify-center items-center bg-gray-100">
+        <div className="flex flex-col items-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500 mb-4"></div>
+          <p className="text-lg text-gray-600">Loading...</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="w-screen h-screen flex justify-center items-center bg-gray-100 px-4">
@@ -45,7 +65,12 @@ const Dashboard = () => {
                   onClick={() => navigate("/manage-opportunities")} 
                   className="mt-4 w-full bg-blue-500 text-white px-6 py-3 rounded-md hover:bg-blue-600 transition duration-200 shadow-md"
                 >
-                  Manage Opportunities
+                  Manage Intern Opportunities
+                </button>
+                <button onClick={()=>navigate("/manage-hackathons")}
+                  className="mt-4 w-full bg-blue-500 text-white px-6 py-3 rounded-md hover:bg-blue-600 transition duration-200 shadow-md"
+                >
+                  Manage Hackathons
                 </button>
               </div>
             ) : (
@@ -56,6 +81,12 @@ const Dashboard = () => {
                   className="mt-4 w-full bg-blue-500 text-white px-6 py-3 rounded-md hover:bg-blue-600 transition duration-200 shadow-md"
                 >
                   View Internship Opportunities
+                </button>
+                <button 
+                  onClick={() => navigate("/hackathons")} 
+                  className="mt-4 w-full bg-blue-500 text-white px-6 py-3 rounded-md hover:bg-blue-600 transition duration-200 shadow-md"
+                >
+                  View Ongoing Hackathons
                 </button>
                 <button 
                   onClick={() => navigate("/saved-internships")} 

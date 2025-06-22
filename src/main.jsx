@@ -14,6 +14,8 @@ import EditInternships from "./pages/EditInternships";
 import EditInternshipForm from "./components/EditInternshipForm";
 import ManageOpportunities from "./pages/ManageOpportunities";
 import SavedInternships from "./pages/SavedInternships";
+import Hackathons from "./pages/Hackathons";
+import ManageHackathonsPanel from "./pages/ManageHackathonsPanel";
 import "./index.css";
 import App from "./App";
 
@@ -31,6 +33,15 @@ ReactDOM.createRoot(document.getElementById("root")).render(
           <Route path="/edit-internships" element={<EditInternships/>}/>
           <Route path="/edit-internship/:id" element={<EditInternshipForm/>}/>
           <Route path="/saved-internships" element={<SavedInternships/>}/>
+          <Route path="/hackathons" element={<Hackathons />} />
+          <Route
+            path="/manage-hackathons"
+            element={
+              <PrivateRoute roleRequired="admin">
+                <ManageHackathonsPanel />
+              </PrivateRoute>
+            }
+          />
           <Route
             path="/admin"
             element={
