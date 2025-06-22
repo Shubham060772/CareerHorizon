@@ -42,7 +42,7 @@ const Dashboard = () => {
               onClick={() => navigate("/login")} 
               className="mt-6 w-full bg-blue-500 text-white px-6 py-3 rounded-md hover:bg-blue-600 transition duration-200 shadow-md"
             >
-              Login with Google
+              Click here to Login
             </button>
           </div>
         ) : (
